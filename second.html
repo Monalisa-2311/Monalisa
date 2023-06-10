@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body{
+        background-color: bisque;
+    }
+    .container {
+      width: 300px;
+      height: 300px;
+      border: 1px solid black;
+      padding: 10px;
+      float: left;
+      margin-left: 600px;
+      background-color: cadetblue;
+      
+      
+    }
+  .container1{
+    width: 300px;
+      height: 300px;
+      border: 1px solid black;
+      padding: 10px;
+      float: left;
+      margin-right: 10px;
+      background-color:cadetblue;
+      
+
+  }
+
+    
+    .item {
+      width: 200px;
+      height: 50px;
+      background-color: white;
+      margin-bottom: 10px;
+      cursor: move;
+      padding: 5px;
+    }
+    
+    .item.dragged {
+      background-color: lightblue;
+    }
+    
+    .success-message {
+      margin-top: 10px;
+      color: black;
+      font-weight: bold;
+      font-style: italic;
+    }
+    .highlight{
+        background-color: goldenrod;
+    }
+    .edge{
+        border: solid 5px lightcoral;
+        box-sizing: border-box;
+    }
+button{
+ margin-left: 550px;
+ background-color: grey; 
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+button:hover {
+  background-color:palevioletred; /* Green */
+  color: white;
+  box-shadow: 0 20px 26px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+  </style>
+</head>
+<body>
+  <div class="container1">
+
+    <div class="item" draggable="true">Item 1</div>
+    <div class="item" draggable="true">Item 2</div>
+    <div class="item" draggable="true">Item 3</div>
+  </div>
+  
+  <div class="container" id="droppable" >
+    <div class="success-message" id="successMessage"></div>
+  </div>
+  <button id="resetButton">Reset button</button>
+
+  
+  <script>
+    var items = document.querySelectorAll('.item');
+    var containers = document.querySelectorAll('.container');
+  
+    var droppable = document.getElementById('droppable');
+    var successMessage = document.getElementById('successMessage');
+  
+    items.forEach(function(item) {
+      item.addEventListener('dragstart', dragStart);
+      item.addEventListener('dragend', dragEnd);
+    });
+  
+    droppable.addEventListener('dragover', dragOver);
+    droppable.addEventListener('dragenter', dragEnter);
+    droppable.addEventListener('dragleave', dragLeave);
+    droppable.addEventListener('drop', dragDrop);
+  
+    var draggedItem = null;
+   let  beingDragged
+  
+    function dragStart(e) {
+      draggedItem = this;
+      this.classList.add('dragged');
+      beingDragged=e.target;
+    }
+  
+    function dragEnd(e) {
+      draggedItem = null;
+      this.classList.remove('dragged');
+      e.target.classList.add('edge')
+      setTimeout(()=> e.target.classList.remove('edge'),150)
+    }
+  
+    function dragOver(e) {
+      e.preventDefault();
+      e.target.classList.add('highlight')
+    }
+  
+    function dragEnter(e) {
+      e.preventDefault();
+      this.style.border = '2px dashed black';
+    }
+  
+    function dragLeave(e) {
+      this.style.border = '1px solid black';
+      e.target.classList.remove('highlight');
+    }
+  
+    function dragDrop(e) {
+      this.style.border = '1px solid black';
+      e.target.append(beingDragged)
+       
+      showSuccessMessage();
+    }
+  
+    function showSuccessMessage() {
+      successMessage.textContent = 'Item dropped successfully!';
+    }
+       // Function to reset the page
+       function resetPage() {
+      // Reload the page
+      location.reload();
+    }
+
+    // Add an event listener to the reset button
+    document.getElementById('resetButton').addEventListener('click', resetPage);
+    
+  </script>
+</body>
+</html>
